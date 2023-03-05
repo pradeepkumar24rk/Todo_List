@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/1743032bc0.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <style>
+        body{
+            background-color: rgb(124, 236, 236);
+        }
+        h1{
+            text-transform: capitalize;
+            
+        }
+        .header{
+            text-align: center;
+            margin-left: 20px;
+        }
+        .header input
+        {
+            height: 40px;
+            width: 190px;
+            border: none;
+            box-shadow: 5px 10px 18px #888888;
+            border-radius: 10px;
+            padding-left: 20px;
+            font-size: 20px;
+
+        }
+        button{
+            width: 90px;
+            height: 40px;
+            font-size: 20px;
+            border-radius: 10px;
+            border: none;
+            text-transform: capitalize;
+
+        }
+        button:hover{
+            background-color: #888888;
+        }
+        .main{
+            display:flex;
+            justify-content: center ;
+           
+        }
+        .todo-list li{
+            list-style-type:none;
+            font-size: 25px;
+            /* line-height: 50px; */
+            /* border: 1px solid red; */
+            border-radius: 9px;
+            /* padding-left: 20px; */
+            width: 300px;
+            margin: 20px;
+            padding: 9px;
+            box-shadow: 5px 10px 18px #888888;
+            background-color: aliceblue;
+        }
+        .todo-list li:nth-child(odd)
+        {
+            background-color: rgb(29, 140, 160);
+            color: white;
+        }
+        .hov:hover{
+            transform: translateY(-3px);
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><span style="color: rgba(235, 113, 224, 0.842);text-transform: uppercase;">todo</span> LisT</h1>
+    <input type="text" id="in_text"/>
+    <button id="add-list">add list</button>
+    </div>
+    
+    
+    <div class="main">
+        <ul class="todo-list">
+            <li class="hov">hede <button style="width:40px ;margin-left:200px"><i class="fa-solid fa-trash-can"></i></button></li>
+        </ul>
+    </div>
+</body>
+<script>
+    var add_list=document.getElementById("add-list");
+    var list=document.querySelector(".todo-list");
+    var inp_text=document.getElementById("in_text");
+    // var first_child=document.getElementById("item1");
+    var current='';
+    inp_text.addEventListener('input',function(e){
+        current=e.target.value;
+    });
+    inp_text.addEventListener('focus',()=>
+    {
+        console.log("focused");
+        inp_text.style.border="1px solid red";
+    });
+     
+    document.body.addEventListener('keydown',function(e){
+        if(e.keyCode===13)
+        {
+            addelement();
+        }
+    })
+    function addDynamically(id,content)
+    {
+        var newListElement=document.createElement("li");
+        var textNode=document.createTextNode(content);
+        newListElement.appendChild(textNode);
+        newListElement.id=id;
+        newListElement.classList.add("hov");
+        // list.appendChild(newListElement);
+        var first_child=list.firstElementChild;
+        console.log(first_child);
+        list.insertBefore(newListElement,first_child);
+        // console.log(list);
+        console.log(newListElement);
+        inp_text.value='';
+        current='';
+    }
+
+    function addelement()
+    {
+        var newListElement=document.createElement("li");
+        var textNode=document.createTextNode(current);
+        newListElement.appendChild(textNode);
+        newListElement.id="item "+(list.childElementCount+1);
+        newListElement.classList.add("hov");
+        // list.appendChild(newListElement);
+        var first_child=list.firstElementChild;
+        console.log(first_child);
+        list.insertBefore(newListElement,first_child);
+        // console.log(list);
+        console.log(newListElement);l
+        inp_text.value='';
+        current='';
+    }
+
+    add_list.addEventListener('click',function(e){addelement();});
+
+
+
+    function ajx()
+    {
+        const http=new XMLHttpRequest()
+        http.onload=function(){
+            var response=JSON.parse(this.responseText);
+            var p=document.getElementById('hello');
+            console.log(response);
+            for(var i=0;i<response.length;i++){
+                console.log(response[i].name);
+                
+                addDynamically(response[i].id,response[i].name);
+            }
+
+            
+        }
+        http.open("GET","DEMO.txt",true);
+        http.send()
+    }
+    ajx()
+</script>
+</html>
